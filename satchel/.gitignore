@@ -1,0 +1,25 @@
+# Dependencies and build output
+node_modules/
+dist/
+src-tauri/target/
+src-tauri/gen/schemas/
+
+# Secrets never belong in the repo. The API key lives in Windows Credential Manager.
+.env
+.env.*
+*.pem
+*.key
+*.pfx
+
+# Local library data, in case a data folder ever ends up inside the repo
+*.db
+*.db-shm
+*.db-wal
+
+# Editors, OS, logs
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+*.log

@@ -1,0 +1,163 @@
+@import "tailwindcss";
+@import "@fontsource-variable/atkinson-hyperlegible-next";
+@import "@fontsource-variable/bricolage-grotesque/standard.css";
+
+/*
+  Satchel design tokens: a study desk at night.
+  Slate surfaces lift by tone (not by borders); one highlighter yellow marks the main action
+  and keyboard focus; subject colours (index-tab hues) are the only other colour.
+*/
+@theme {
+  --font-sans: "Atkinson Hyperlegible Next Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Bricolage Grotesque Variable", "Atkinson Hyperlegible Next Variable", sans-serif;
+
+  --color-slate-well: #141a1d; /* inputs, inset wells */
+  --color-slate-base: #192024; /* app background */
+  --color-slate-side: #1d252a; /* sidebar */
+  --color-slate-raised: #222b30; /* panels */
+  --color-slate-lift: #2a353b; /* hover, secondary buttons */
+  --color-slate-line: #34424a; /* hairlines */
+  --color-slate-edge: #4a5a62; /* strong outlines */
+
+  --color-chalk: #e7e5dd; /* primary text */
+  --color-chalk-soft: #c3c6bf; /* secondary text */
+  --color-chalk-mute: #95a1a4; /* tertiary text, captions */
+
+  --color-highlight: #e8d36b;
+  --color-highlight-strong: #f2df7c;
+  --color-highlight-ink: #26220c;
+
+  --color-ok: #79c6a5;
+  --color-warn: #e9b65a;
+  --color-danger: #f08a80;
+
+  /* Subject index tabs (used from milestone 3). */
+  --color-tab-sky: #7fb4e0;
+  --color-tab-mint: #79c6a5;
+  --color-tab-rose: #e28aa6;
+  --color-tab-lilac: #a99ae6;
+  --color-tab-amber: #e9b65a;
+  --color-tab-teal: #5fbfc4;
+
+  --radius-panel: 18px;
+  --radius-control: 9px;
+
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    background: var(--color-slate-base);
+    color: var(--color-chalk);
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    user-select: none; /* desktop app: text is selectable where it matters (see .selectable) */
+  }
+
+  input,
+  textarea,
+  .selectable {
+    user-select: text;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-highlight);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--color-highlight) 45%, transparent);
+    color: var(--color-chalk);
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-slate-lift);
+    border-radius: 999px;
+    border: 3px solid var(--color-slate-base);
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
+
+@layer components {
+  /* A highlighter swipe behind text: marks "you are here" and things that need attention. */
+  .highlighter {
+    /* Covers the lower half of the letters and runs slightly past them, like a real marker. */
+    padding: 0 0.2em;
+    margin: 0 -0.2em;
+    border-radius: 0.2em 0.35em 0.25em 0.4em;
+    background-image: linear-gradient(
+      100deg,
+      color-mix(in oklab, var(--color-highlight) 20%, transparent),
+      color-mix(in oklab, var(--color-highlight) 36%, transparent) 12%,
+      color-mix(in oklab, var(--color-highlight) 32%, transparent) 88%,
+      color-mix(in oklab, var(--color-highlight) 18%, transparent)
+    );
+    background-size: 100% 0.55em;
+    background-position: 0 72%;
+    background-repeat: no-repeat;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
+
+  .field {
+    width: 100%;
+    border-radius: var(--radius-control);
+    background: var(--color-slate-well);
+    border: 1px solid var(--color-slate-line);
+    height: 2.25rem; /* same as buttons, so a field and its button line up */
+    padding: 0 0.8rem;
+    color: var(--color-chalk);
+    font-size: 0.95rem;
+    transition: border-color 150ms var(--ease-out-soft);
+  }
+  .field::placeholder {
+    color: var(--color-chalk-mute);
+  }
+  .field:hover {
+    border-color: var(--color-slate-edge);
+  }
+  .field:focus-visible {
+    outline: none;
+    border-color: var(--color-highlight);
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--color-highlight) 22%, transparent);
+  }
+
+  .appear {
+    animation: appear 260ms var(--ease-out-soft) both;
+  }
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
